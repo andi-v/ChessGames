@@ -1,15 +1,6 @@
 class Piece {
-    constructor(name, color) {
-        this.name = name;
+    constructor(color) {
         this.color = color;
-    }
-
-    set name(value) {
-        this._name = value;
-    }
-
-    get name() {
-        return this._name;
     }
 
     set color(value) {
@@ -20,7 +11,16 @@ class Piece {
         return this._color;
     }
 
-    firstLetter() {
-        return this.name.substr(1, 1);
+    toString() {
+        if (this.color == "black")
+            return this.constructor.name.substr(0, 1);
+        else return this.constructor.name.substr(0, 1).toLowerCase();
     }
 }
+
+class Pawn extends Piece {}
+class Rook extends Piece {}
+class Horse extends Piece {}
+class Bishop extends Piece {}
+class Queen extends Piece {}
+class King extends Piece {}

@@ -1,0 +1,31 @@
+.grid-container {
+    display: grid;
+    width: 271px;
+    grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px;
+    grid-template-rows: 30px 30px 30px 30px 30px 30px 30px 30px 30px;
+}
+
+.grid-container > div {
+    text-align: center;
+    line-height: 30px;
+    font-size: 18px;
+    border-style: solid;
+    border-width: 1px 1px 0 0;
+}
+
+[class="1A"], [class="1C"], [class="1E"], [class="1G"],
+[class="2B"], [class="2D"], [class="2F"], [class="2H"],
+[class="3A"], [class="3C"], [class="3E"], [class="3G"],
+[class="4B"], [class="4D"], [class="4F"], [class="4H"],
+[class="5A"], [class="5C"], [class="5E"], [class="5G"],
+[class="6B"], [class="6D"], [class="6F"], [class="6H"],
+[class="7A"], [class="7C"], [class="7E"], [class="7G"],
+[class="8B"], [class="8D"], [class="8F"], [class="8H"]
+{
+    background-color: rgb(141, 177, 120);
+}
+
+.item1 {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
