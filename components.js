@@ -6,12 +6,13 @@ class GameSelection extends React.Component {
     }
 
     handleChessSelection() {
-        let game = new Chess();
+        var game = new Chess();
         this.props.onChessSelection(game);
     }
 
     handleCheckersSelection() {
-
+        var game = new Checkers();
+        this.props.onCheckersSelection(game);
     }
 
     render() {
@@ -180,24 +181,19 @@ class App extends React.Component {
                     {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
                     {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""}]
         }
-        this.handleChessSelection = this.handleChessSelection.bind(this);
-        this.handleCheckersSelection = this.handleCheckersSelection.bind(this);
+        this.handleGameSelection = this.handleGameSelection.bind(this);
     }
 
-    handleChessSelection(game) {
+    handleGameSelection(game) {
         this.setState({board: game.board.matrix})
-    }
-
-    handleCheckersSelection(game) {
-
     }
 
     render () {
         return (
             <div>
                 <GameSelection
-                    onChessSelection={this.handleChessSelection}
-                    onCheckersSelection={this.handleCheckersSelection}
+                    onChessSelection={this.handleGameSelection}
+                    onCheckersSelection={this.handleGameSelection}
                 />
                 <PlayBoard
                     board={this.state.board}
