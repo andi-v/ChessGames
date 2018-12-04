@@ -47,8 +47,8 @@ class Chess extends Game {
     // creates a range from [nr1 + 1, nr2 - 1]
     range(nr1, nr2) {
         if (nr1 < nr2)
-            return (new Array(nr2 - nr1 - 1)).map((_, i) => i + nr1 + 1);
-        else return (new Array(nr1 - nr2 - 1)).map((_, i) => i + nr2 + 1);
+            return (new Array(nr2 - nr1 - 1)).fill(undefined).map((_, i) => i + nr1 + 1);
+        else return (new Array(nr1 - nr2 - 1)).fill(undefined).map((_, i) => i + nr2 + 1);
     }
 
     // checks if the path from initial to final position has no pieces
@@ -79,21 +79,55 @@ class Chess extends Game {
 
     // check if the moving piece can jump that many rows and columns, in that direction
     moveToLocation(piece, rows, columns) {
-        if (piece.toString().toUpperCase() == "P") {
-            if (piece.color == "white") {
-                if ((rows != 1) || (columns != 0)) return false;
-            }
-            else if ((rows != -1) || (columns != 0)) return false;
+        switch (piece.toString().toUpperCase()) {
+            case "P":   
+                if (piece.color == "white") {
+                    if ((rows != 1) || (columns != 0)) return false;
+                }
+                else if ((rows != -1) || (columns != 0)) return false;
+                break;
+            case "R":   
+                return false;
+                break;
+            case "H":   
+                return false;
+                break;
+            case "B":   
+                return false;
+                break;
+            case "Q":   
+                return false;
+                break;
+            case "K":   
+                return false;
+                break;
         }
         return true;
     }
 
     eatAtLocation(piece, rows, columns) {
-        if (piece.toString().toUpperCase() == "P") {
-            if (piece.color == "white") {
-                if ((rows != 1) || (Math.abs(columns) != 1)) return false;
-            }
-            else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+        switch (piece.toString().toUpperCase()) {
+            case "P":   
+                if (piece.color == "white") {
+                    if ((rows != 1) || (Math.abs(columns) != 1)) return false;
+                }
+                else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+                break;
+            case "R":   
+                return false;
+                break;
+            case "H":   
+                return false;
+                break;
+            case "B":   
+                return false;
+                break;
+            case "Q":   
+                return false;
+                break;
+            case "K":   
+                return false;
+                break;
         }
         return true;
     }

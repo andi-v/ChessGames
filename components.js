@@ -205,8 +205,9 @@ class App extends React.Component {
         if (click == 1) this.setState({move: position});
         else {
             const newState = this.state.move + position;
-            this.setState({move: newState});
-            this.handleMoveClick();
+            this.setState({move: newState}, () => {
+                this.handleMoveClick();
+            });
         }
     }
 
