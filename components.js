@@ -1,18 +1,6 @@
 class GameSelection extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChessSelection = this.handleChessSelection.bind(this);
-        this.handleCheckersSelection = this.handleCheckersSelection.bind(this);
-    }
-
-    handleChessSelection() {
-        var game = new Chess();
-        this.props.onChessSelection(game);
-    }
-
-    handleCheckersSelection() {
-        var game = new Checkers();
-        this.props.onCheckersSelection(game);
     }
 
     render() {
@@ -23,13 +11,13 @@ class GameSelection extends React.Component {
                     type="button"
                     id="selectChess"
                     value="Chess"
-                    onClick={this.handleChessSelection}
+                    onClick={this.props.onChessSelection}
                 />
                 <input
                     type="button"
                     id="selectCheckers"
                     value="Checkers"
-                    onClick={this.handleCheckersSelection}
+                    onClick={this.props.onCheckersSelection}
                 />
                 <br/><br/>
             </div>
@@ -40,90 +28,98 @@ class GameSelection extends React.Component {
 class PlayBoard extends React.Component {
     constructor(props) {
         super(props);
+        this.click = 1;
+        this.handlePieceClick = this.handlePieceClick.bind(this);
+    }
+
+    handlePieceClick(e) {
+        this.props.onPieceClick(e.target.className, this.click);
+        if (this.click == 2) this.click = 1;
+        else this.click++;
     }
 
     render() {
         return (
             <div className="grid-container">
                 <div className="8" style={{borderWidth: '0 1px 0 0'}}>8</div>
-                <div className="8A">{this.props.board[8].A.toString()}</div>
-                <div className="8B">{this.props.board[8].B.toString()}</div>  
-                <div className="8C">{this.props.board[8].C.toString()}</div>
-                <div className="8D">{this.props.board[8].D.toString()}</div>
-                <div className="8E">{this.props.board[8].E.toString()}</div>
-                <div className="8F">{this.props.board[8].F.toString()}</div>
-                <div className="8G">{this.props.board[8].G.toString()}</div>
-                <div className="8H">{this.props.board[8].H.toString()}</div>
+                <div className="8A" onClick={this.handlePieceClick}>{this.props.board[8][1].toString()}</div>
+                <div className="8B" onClick={this.handlePieceClick}>{this.props.board[8][2].toString()}</div>  
+                <div className="8C" onClick={this.handlePieceClick}>{this.props.board[8][3].toString()}</div>
+                <div className="8D" onClick={this.handlePieceClick}>{this.props.board[8][4].toString()}</div>
+                <div className="8E" onClick={this.handlePieceClick}>{this.props.board[8][5].toString()}</div>
+                <div className="8F" onClick={this.handlePieceClick}>{this.props.board[8][6].toString()}</div>
+                <div className="8G" onClick={this.handlePieceClick}>{this.props.board[8][7].toString()}</div>
+                <div className="8H" onClick={this.handlePieceClick}>{this.props.board[8][8].toString()}</div>
 
                 <div className="7" style={{borderWidth: '0 1px 0 0'}}>7</div>
-                <div className="7A">{this.props.board[7].A.toString()}</div>
-                <div className="7B">{this.props.board[7].B.toString()}</div>
-                <div className="7C">{this.props.board[7].C.toString()}</div>  
-                <div className="7D">{this.props.board[7].D.toString()}</div>
-                <div className="7E">{this.props.board[7].E.toString()}</div>
-                <div className="7F">{this.props.board[7].F.toString()}</div>
-                <div className="7G">{this.props.board[7].G.toString()}</div>
-                <div className="7H">{this.props.board[7].H.toString()}</div>
+                <div className="7A" onClick={this.handlePieceClick}>{this.props.board[7][1].toString()}</div>
+                <div className="7B" onClick={this.handlePieceClick}>{this.props.board[7][2].toString()}</div>
+                <div className="7C" onClick={this.handlePieceClick}>{this.props.board[7][3].toString()}</div>  
+                <div className="7D" onClick={this.handlePieceClick}>{this.props.board[7][4].toString()}</div>
+                <div className="7E" onClick={this.handlePieceClick}>{this.props.board[7][5].toString()}</div>
+                <div className="7F" onClick={this.handlePieceClick}>{this.props.board[7][6].toString()}</div>
+                <div className="7G" onClick={this.handlePieceClick}>{this.props.board[7][7].toString()}</div>
+                <div className="7H" onClick={this.handlePieceClick}>{this.props.board[7][8].toString()}</div>
 
                 <div className="6" style={{borderWidth: '0 1px 0 0'}}>6</div>
-                <div className="6A">{this.props.board[6].A.toString()}</div>
-                <div className="6B">{this.props.board[6].B.toString()}</div>
-                <div className="6C">{this.props.board[6].C.toString()}</div>  
-                <div className="6D">{this.props.board[6].D.toString()}</div>
-                <div className="6E">{this.props.board[6].E.toString()}</div>
-                <div className="6F">{this.props.board[6].F.toString()}</div>
-                <div className="6G">{this.props.board[6].G.toString()}</div>
-                <div className="6H">{this.props.board[6].H.toString()}</div>
+                <div className="6A" onClick={this.handlePieceClick}>{this.props.board[6][1].toString()}</div>
+                <div className="6B" onClick={this.handlePieceClick}>{this.props.board[6][2].toString()}</div>
+                <div className="6C" onClick={this.handlePieceClick}>{this.props.board[6][3].toString()}</div>  
+                <div className="6D" onClick={this.handlePieceClick}>{this.props.board[6][4].toString()}</div>
+                <div className="6E" onClick={this.handlePieceClick}>{this.props.board[6][5].toString()}</div>
+                <div className="6F" onClick={this.handlePieceClick}>{this.props.board[6][6].toString()}</div>
+                <div className="6G" onClick={this.handlePieceClick}>{this.props.board[6][7].toString()}</div>
+                <div className="6H" onClick={this.handlePieceClick}>{this.props.board[6][8].toString()}</div>
 
                 <div className="5" style={{borderWidth: '0 1px 0 0'}}>5</div>
-                <div className="5A">{this.props.board[5].A.toString()}</div>
-                <div className="5B">{this.props.board[5].B.toString()}</div>
-                <div className="5C">{this.props.board[5].C.toString()}</div>  
-                <div className="5D">{this.props.board[5].D.toString()}</div>
-                <div className="5E">{this.props.board[5].E.toString()}</div>
-                <div className="5F">{this.props.board[5].F.toString()}</div>
-                <div className="5G">{this.props.board[5].G.toString()}</div>
-                <div className="5H">{this.props.board[5].H.toString()}</div>
+                <div className="5A" onClick={this.handlePieceClick}>{this.props.board[5][1].toString()}</div>
+                <div className="5B" onClick={this.handlePieceClick}>{this.props.board[5][2].toString()}</div>
+                <div className="5C" onClick={this.handlePieceClick}>{this.props.board[5][3].toString()}</div>  
+                <div className="5D" onClick={this.handlePieceClick}>{this.props.board[5][4].toString()}</div>
+                <div className="5E" onClick={this.handlePieceClick}>{this.props.board[5][5].toString()}</div>
+                <div className="5F" onClick={this.handlePieceClick}>{this.props.board[5][6].toString()}</div>
+                <div className="5G" onClick={this.handlePieceClick}>{this.props.board[5][7].toString()}</div>
+                <div className="5H" onClick={this.handlePieceClick}>{this.props.board[5][8].toString()}</div>
 
                 <div className="4" style={{borderWidth: '0 1px 0 0'}}>4</div>
-                <div className="4A">{this.props.board[4].A.toString()}</div>
-                <div className="4B">{this.props.board[4].B.toString()}</div>
-                <div className="4C">{this.props.board[4].C.toString()}</div>  
-                <div className="4D">{this.props.board[4].D.toString()}</div>
-                <div className="4E">{this.props.board[4].E.toString()}</div>
-                <div className="4F">{this.props.board[4].F.toString()}</div>
-                <div className="4G">{this.props.board[4].G.toString()}</div>
-                <div className="4H">{this.props.board[4].H.toString()}</div>
+                <div className="4A" onClick={this.handlePieceClick}>{this.props.board[4][1].toString()}</div>
+                <div className="4B" onClick={this.handlePieceClick}>{this.props.board[4][2].toString()}</div>
+                <div className="4C" onClick={this.handlePieceClick}>{this.props.board[4][3].toString()}</div>  
+                <div className="4D" onClick={this.handlePieceClick}>{this.props.board[4][4].toString()}</div>
+                <div className="4E" onClick={this.handlePieceClick}>{this.props.board[4][5].toString()}</div>
+                <div className="4F" onClick={this.handlePieceClick}>{this.props.board[4][6].toString()}</div>
+                <div className="4G" onClick={this.handlePieceClick}>{this.props.board[4][7].toString()}</div>
+                <div className="4H" onClick={this.handlePieceClick}>{this.props.board[4][8].toString()}</div>
 
                 <div className="3" style={{borderWidth: '0 1px 0 0'}}>3</div>
-                <div className="3A">{this.props.board[3].A.toString()}</div>
-                <div className="3B">{this.props.board[3].B.toString()}</div>
-                <div className="3C">{this.props.board[3].C.toString()}</div>  
-                <div className="3D">{this.props.board[3].D.toString()}</div>
-                <div className="3E">{this.props.board[3].E.toString()}</div>
-                <div className="3F">{this.props.board[3].F.toString()}</div>
-                <div className="3G">{this.props.board[3].G.toString()}</div>
-                <div className="3H">{this.props.board[3].H.toString()}</div>
+                <div className="3A" onClick={this.handlePieceClick}>{this.props.board[3][1].toString()}</div>
+                <div className="3B" onClick={this.handlePieceClick}>{this.props.board[3][2].toString()}</div>
+                <div className="3C" onClick={this.handlePieceClick}>{this.props.board[3][3].toString()}</div>  
+                <div className="3D" onClick={this.handlePieceClick}>{this.props.board[3][4].toString()}</div>
+                <div className="3E" onClick={this.handlePieceClick}>{this.props.board[3][5].toString()}</div>
+                <div className="3F" onClick={this.handlePieceClick}>{this.props.board[3][6].toString()}</div>
+                <div className="3G" onClick={this.handlePieceClick}>{this.props.board[3][7].toString()}</div>
+                <div className="3H" onClick={this.handlePieceClick}>{this.props.board[3][8].toString()}</div>
 
                 <div className="2" style={{borderWidth: '0 1px 0 0'}}>2</div>
-                <div className="2A">{this.props.board[2].A.toString()}</div>
-                <div className="2B">{this.props.board[2].B.toString()}</div>
-                <div className="2C">{this.props.board[2].C.toString()}</div>  
-                <div className="2D">{this.props.board[2].D.toString()}</div>
-                <div className="2E">{this.props.board[2].E.toString()}</div>
-                <div className="2F">{this.props.board[2].F.toString()}</div>
-                <div className="2G">{this.props.board[2].G.toString()}</div>
-                <div className="2H">{this.props.board[2].H.toString()}</div>
+                <div className="2A" onClick={this.handlePieceClick}>{this.props.board[2][1].toString()}</div>
+                <div className="2B" onClick={this.handlePieceClick}>{this.props.board[2][2].toString()}</div>
+                <div className="2C" onClick={this.handlePieceClick}>{this.props.board[2][3].toString()}</div>  
+                <div className="2D" onClick={this.handlePieceClick}>{this.props.board[2][4].toString()}</div>
+                <div className="2E" onClick={this.handlePieceClick}>{this.props.board[2][5].toString()}</div>
+                <div className="2F" onClick={this.handlePieceClick}>{this.props.board[2][6].toString()}</div>
+                <div className="2G" onClick={this.handlePieceClick}>{this.props.board[2][7].toString()}</div>
+                <div className="2H" onClick={this.handlePieceClick}>{this.props.board[2][8].toString()}</div>
 
                 <div className="1" style={{borderWidth: '0 1px 0 0'}}>1</div>
-                <div className="1A">{this.props.board[1].A.toString()}</div>
-                <div className="1B">{this.props.board[1].B.toString()}</div>
-                <div className="1C">{this.props.board[1].C.toString()}</div>  
-                <div className="1D">{this.props.board[1].D.toString()}</div>
-                <div className="1E">{this.props.board[1].E.toString()}</div>
-                <div className="1F">{this.props.board[1].F.toString()}</div>
-                <div className="1G">{this.props.board[1].G.toString()}</div>
-                <div className="1H">{this.props.board[1].H.toString()}</div>
+                <div className="1A" onClick={this.handlePieceClick}>{this.props.board[1][1].toString()}</div>
+                <div className="1B" onClick={this.handlePieceClick}>{this.props.board[1][2].toString()}</div>
+                <div className="1C" onClick={this.handlePieceClick}>{this.props.board[1][3].toString()}</div>  
+                <div className="1D" onClick={this.handlePieceClick}>{this.props.board[1][4].toString()}</div>
+                <div className="1E" onClick={this.handlePieceClick}>{this.props.board[1][5].toString()}</div>
+                <div className="1F" onClick={this.handlePieceClick}>{this.props.board[1][6].toString()}</div>
+                <div className="1G" onClick={this.handlePieceClick}>{this.props.board[1][7].toString()}</div>
+                <div className="1H" onClick={this.handlePieceClick}>{this.props.board[1][8].toString()}</div>
 
                 <div className="0" style={{borderWidth: '0 0 0 0'}}> </div>
                 <div className="A" style={{borderWidth: '1px 0 0 0'}}>A</div>
@@ -142,10 +138,11 @@ class PlayBoard extends React.Component {
 class MovesInput extends React.Component {
     constructor(props) {
         super(props);
+        this.handleMoveChange = this.handleMoveChange.bind(this);
     }
 
-    handleMoveButton() {
-
+    handleMoveChange(e) {
+        this.props.onMoveChange(e.target.value);
     }
 
     render() {
@@ -155,12 +152,14 @@ class MovesInput extends React.Component {
                 <input 
                     type="text"
                     id="moveInput"
+                    value={this.props.move}
+                    onChange={this.handleMoveChange}
                 />
                 <input
                     type="button"
                     id="moveButton"
                     value="Move"
-                    onClick={this.handleMoveButton}
+                    onClick={this.props.onMoveClick}
                 />
             </p>
         );
@@ -171,34 +170,73 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            board: [{},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""},
-                    {A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: ""}]
+            board: [[], ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""],
+                        ["", "", "", "", "", "", "", "", ""]],
+            move: ""
         }
-        this.handleGameSelection = this.handleGameSelection.bind(this);
+        this.handleChessSelection = this.handleChessSelection.bind(this);
+        this.handleCheckersSelection = this.handleCheckersSelection.bind(this);
+        this.handleMoveChange = this.handleMoveChange.bind(this);
+        this.handlePieceClick = this.handlePieceClick.bind(this);
+        this.handleMoveClick = this.handleMoveClick.bind(this);
     }
 
-    handleGameSelection(game) {
-        this.setState({board: game.board.matrix})
+    handleChessSelection() {
+        this.game = new Chess();
+        this.setState({board: this.game.board.matrix});
+    }
+
+    handleCheckersSelection() {
+        this.game = new Checkers();
+        this.setState({board: this.game.board.matrix});
+    }
+
+    handleMoveChange(newValue) {
+        this.setState({move: newValue});
+    }
+
+    handlePieceClick(position, click) {
+        if (click == 1) this.setState({move: position});
+        else {
+            const newState = this.state.move + position;
+            this.setState({move: newState});
+            this.handleMoveClick();
+        }
+    }
+
+    handleMoveClick() {
+        const letterNumber = {A:1, B:2, C:3, D:4, E:5, F:6, G:7, H:8}
+        let newMove = this.state.move.substr(0,1) + 
+                        letterNumber[this.state.move.substr(1,1).toUpperCase()] +
+                        this.state.move.substr(2,1) +
+                        letterNumber[this.state.move.substr(3,1).toUpperCase()];
+        this.game.tryMove(newMove);
+        this.setState({move: ""});
+        this.setState({board: this.game.board.matrix});
     }
 
     render () {
         return (
             <div>
                 <GameSelection
-                    onChessSelection={this.handleGameSelection}
-                    onCheckersSelection={this.handleGameSelection}
+                    onChessSelection={this.handleChessSelection}
+                    onCheckersSelection={this.handleCheckersSelection}
                 />
                 <PlayBoard
                     board={this.state.board}
+                    onPieceClick={this.handlePieceClick}
                 />
-                <MovesInput/>
+                <MovesInput
+                    move={this.state.move}
+                    onMoveChange={this.handleMoveChange}
+                    onMoveClick={this.handleMoveClick}
+                />
             </div>
         );
     }
