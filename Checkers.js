@@ -80,79 +80,29 @@ class Checkers extends Game {
                 
                 if (piece instanceof Queen) {
                     if ((startPiece.color == "white") && (piece.color == "white")) {
-                        if (this.findCaptureRightUpCorner(row, col, "black") ||
-                        this.findCaptureLeftUpCorner(row, col, "black") ||
-                        this.findCaptureRightDownCorner(row, col, "black") ||
-                        this.findCaptureLeftDownCorner(row, col, "black")) {
-                            mandatoryMove = true;
-                            break;
-                        }
+                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "black") ||
+                            this.findCaptureLeftUpCorner(row, col, "black") ||
+                            this.findCaptureRightDownCorner(row, col, "black") ||
+                            this.findCaptureLeftDownCorner(row, col, "black");
                     }
                     else if ((startPiece.color == "black") && (piece.color == "black")) {
-                        if (this.findCaptureRightUpCorner(row, col, "white") ||
-                        this.findCaptureLeftUpCorner(row, col, "white") ||
-                        this.findCaptureRightDownCorner(row, col, "white") ||
-                        this.findCaptureLeftDownCorner(row, col, "white")) {
-                            mandatoryMove = true;
-                            break;
-                        }
+                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "white") ||
+                            this.findCaptureLeftUpCorner(row, col, "white") ||
+                            this.findCaptureRightDownCorner(row, col, "white") ||
+                            this.findCaptureLeftDownCorner(row, col, "white")
                     }
                 }
-
-                if (piece instanceof Pawn) {
+                else if (piece instanceof Pawn) {
                     if ((startPiece.color == "white") && (piece.color == "white")) {
-                        if (this.findCaptureRightUpCorner(row, col, "black") ||
-                        this.findCaptureLeftUpCorner(row, col, "black")) {
-                            mandatoryMove = true;
-                            break;
-                        }
+                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "black") ||
+                            this.findCaptureLeftUpCorner(row, col, "black")
                     }
                     else if ((startPiece.color == "black") && (piece.color == "black")) {
-                        if (this.findCaptureRightDownCorner(row, col, "white") ||
-                        this.findCaptureLeftDownCorner(row, col, "white")) {
-                            mandatoryMove = true;
-                            break;
-                        }
+                        mandatoryMove = this.findCaptureRightDownCorner(row, col, "white") ||
+                            this.findCaptureLeftDownCorner(row, col, "white")
                     }
                 }
-
-
-                // // if it.s a white Pawn / Queen, check the 2 corners above
-                // if (((piece instanceof Pawn) || (piece instanceof Queen)) &&
-                // (startPiece.color == "white") && (piece.color == "white")) {
-                //     if (this.findCaptureRightUpCorner(row, col, "black") ||
-                //     this.findCaptureLeftUpCorner(row, col, "black")) {
-                //             mandatoryMove = true;
-                //             break;
-                //         }
-                // }
-                // // if it.s a black Pawn / Queen, check the 2 corners below
-                // if (((piece instanceof Pawn) || (piece instanceof Queen)) &&
-                // (startPiece.color == "black") && (piece.color == "black")) {
-                //     if (this.findCaptureRightDownCorner(row, col, "white") ||
-                //     this.findCaptureLeftDownCorner(row, col, "white")) {
-                //             mandatoryMove = true;
-                //             break;
-                //         }
-                // }
-                // // if it.s a white Queen, also check the 2 corners below
-                // if ((piece instanceof Queen) &&
-                // (startPiece.color == "white") && (piece.color == "white")) {
-                //     if (this.findCaptureRightDownCorner(row, col, "black") ||
-                //     this.findCaptureLeftDownCorner(row, col, "black")) {
-                //             mandatoryMove = true;
-                //             break;
-                //         }
-                // }
-                // // if it.s a black Queen, also check the 2 corners above
-                // if ((piece instanceof Queen) &&
-                // (startPiece.color == "black") && (piece.color == "black")) {
-                //     if (this.findCaptureRightUpCorner(row, col, "white") ||
-                //     this.findCaptureLeftUpCorner(row, col, "white")) {
-                //             mandatoryMove = true;
-                //             break;
-                //         }
-                // }
+                if (mandatoryMove) break;
             }
             if (mandatoryMove) break;
         }
