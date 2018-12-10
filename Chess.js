@@ -7,41 +7,41 @@ class Chess extends Game {
     
     createInitialMatrix() {
         let m = this.board.matrix;
-        m[1][1] = new Rook(0);
-        m[1][8] = new Rook(0);
-        m[1][2] = new Horse(0);
-        m[1][7] = new Horse(0);
-        m[1][3] = new Bishop(0);
-        m[1][6] = new Bishop(0);
-        m[1][4] = new Queen(0);
-        m[1][5] = new King(0);
+        m[1][1] = new Rook("white");
+        m[1][8] = new Rook("white");
+        m[1][2] = new Horse("white");
+        m[1][7] = new Horse("white");
+        m[1][3] = new Bishop("white");
+        m[1][6] = new Bishop("white");
+        m[1][4] = new Queen("white");
+        m[1][5] = new King("white");
 
-        m[2][1] = new Pawn(0);
-        m[2][2] = new Pawn(0);
-        m[2][3] = new Pawn(0);
-        m[2][4] = new Pawn(0);
-        m[2][5] = new Pawn(0);
-        m[2][6] = new Pawn(0);
-        m[2][7] = new Pawn(0);
-        m[2][8] = new Pawn(0);
+        m[2][1] = new Pawn("white");
+        m[2][2] = new Pawn("white");
+        m[2][3] = new Pawn("white");
+        m[2][4] = new Pawn("white");
+        m[2][5] = new Pawn("white");
+        m[2][6] = new Pawn("white");
+        m[2][7] = new Pawn("white");
+        m[2][8] = new Pawn("white");
 
-        m[7][1] = new Pawn(1);
-        m[7][2] = new Pawn(1);
-        m[7][3] = new Pawn(1);
-        m[7][4] = new Pawn(1);
-        m[7][5] = new Pawn(1);
-        m[7][6] = new Pawn(1);
-        m[7][7] = new Pawn(1);
-        m[7][8] = new Pawn(1);
+        m[7][1] = new Pawn("black");
+        m[7][2] = new Pawn("black");
+        m[7][3] = new Pawn("black");
+        m[7][4] = new Pawn("black");
+        m[7][5] = new Pawn("black");
+        m[7][6] = new Pawn("black");
+        m[7][7] = new Pawn("black");
+        m[7][8] = new Pawn("black");
 
-        m[8][1] = new Rook(1);
-        m[8][8] = new Rook(1);
-        m[8][2] = new Horse(1);
-        m[8][7] = new Horse(1);
-        m[8][3] = new Bishop(1);
-        m[8][6] = new Bishop(1);
-        m[8][4] = new Queen(1);
-        m[8][5] = new King(1);
+        m[8][1] = new Rook("black");
+        m[8][8] = new Rook("black");
+        m[8][2] = new Horse("black");
+        m[8][7] = new Horse("black");
+        m[8][3] = new Bishop("black");
+        m[8][6] = new Bishop("black");
+        m[8][4] = new Queen("black");
+        m[8][5] = new King("black");
     }
 
     // creates a range from [nr1 + 1, nr2 - 1]
@@ -83,14 +83,14 @@ class Chess extends Game {
             case "P":
                 if (!endPiece) {
                     // The Pawn rules for moving to an empty location
-                    if (startPiece.color == 0) {
+                    if (startPiece.color == "white") {
                         if ((rows != 1) || (columns != 0)) return false;
                     }
                     else if ((rows != -1) || (columns != 0)) return false;
                 }
                 else {
                     // The Pawn rules for capturing another piece
-                    if (startPiece.color == 0) {
+                    if (startPiece.color == "white") {
                         if ((rows != 1) || (Math.abs(columns) != 1)) return false;
                     }
                     else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
@@ -125,8 +125,8 @@ class Chess extends Game {
     movePiece(piece, initialPos, finalPos) {
         switch (piece.toString().toUpperCase()) {
             case "P": {
-                if (((piece.color == 0) && (finalPos[0] == 8)) ||
-                    ((piece.color == 1) && (finalPos[0] == 1)))
+                if (((piece.color == "white") && (finalPos[0] == 8)) ||
+                    ((piece.color == "black") && (finalPos[0] == 1)))
                     this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
                 else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
                 break;

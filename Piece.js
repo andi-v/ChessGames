@@ -12,7 +12,7 @@ class Piece {
     }
 
     toString() {
-        if (this.color == 1)
+        if (this.color == "black")
             return this.constructor.name.substr(0, 1);
         else return this.constructor.name.substr(0, 1).toLowerCase();
     }

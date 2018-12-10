@@ -7,31 +7,31 @@ class Checkers extends Game {
     
     createInitialMatrix() {
         let m = this.board.matrix;
-        m[1][1] = new Pawn(0);
-        m[1][3] = new Pawn(0);
-        m[1][5] = new Pawn(0);
-        m[1][7] = new Pawn(0);
-        m[2][2] = new Pawn(0);
-        m[2][4] = new Pawn(0);
-        m[2][6] = new Pawn(0);
-        m[2][8] = new Pawn(0);
-        m[3][1] = new Pawn(0);
-        m[3][3] = new Pawn(0);
-        m[3][5] = new Pawn(0);
-        m[3][7] = new Pawn(0);
+        m[1][1] = new Pawn("white");
+        m[1][3] = new Pawn("white");
+        m[1][5] = new Pawn("white");
+        m[1][7] = new Pawn("white");
+        m[2][2] = new Pawn("white");
+        m[2][4] = new Pawn("white");
+        m[2][6] = new Pawn("white");
+        m[2][8] = new Pawn("white");
+        m[3][1] = new Pawn("white");
+        m[3][3] = new Pawn("white");
+        m[3][5] = new Pawn("white");
+        m[3][7] = new Pawn("white");
 
-        m[6][2] = new Pawn(1);
-        m[6][4] = new Pawn(1);
-        m[6][6] = new Pawn(1);
-        m[6][8] = new Pawn(1);
-        m[7][1] = new Pawn(1);
-        m[7][3] = new Pawn(1);
-        m[7][5] = new Pawn(1);
-        m[7][7] = new Pawn(1);
-        m[8][2] = new Pawn(1);
-        m[8][4] = new Pawn(1);
-        m[8][6] = new Pawn(1);
-        m[8][8] = new Pawn(1);
+        m[6][2] = new Pawn("black");
+        m[6][4] = new Pawn("black");
+        m[6][6] = new Pawn("black");
+        m[6][8] = new Pawn("black");
+        m[7][1] = new Pawn("black");
+        m[7][3] = new Pawn("black");
+        m[7][5] = new Pawn("black");
+        m[7][7] = new Pawn("black");
+        m[8][2] = new Pawn("black");
+        m[8][4] = new Pawn("black");
+        m[8][6] = new Pawn("black");
+        m[8][8] = new Pawn("black");
     }
 
     range(nr1, nr2) {
@@ -53,24 +53,24 @@ class Checkers extends Game {
                 let piece = this.board.matrix[row][col];
                 
                 if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
-                (startPiece.color == 0) && (piece.color == 0)) {
+                (startPiece.color == "white") && (piece.color == "white")) {
                     if ((this.board.matrix[row+1][col+1] && 
-                        (this.board.matrix[row+1][col+1].color == !startPiece.color) &&
+                        (this.board.matrix[row+1][col+1].color == "black") &&
                         !this.board.matrix[row+2][col+2]) ||
                         (this.board.matrix[row+1][col-1] && 
-                        (this.board.matrix[row+1][col-1].color == !startPiece.color) &&
+                        (this.board.matrix[row+1][col-1].color == "black") &&
                         !this.board.matrix[row+2][col-2])) {
                             mandatoryMove = true;
                             break;
                         }
                 }
                 if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
-                (startPiece.color == 1) && (piece.color == 1)) {
+                (startPiece.color == "black") && (piece.color == "black")) {
                     if ((this.board.matrix[row-1][col+1] && 
-                        (this.board.matrix[row-1][col+1].color == !startPiece.color) &&
+                        (this.board.matrix[row-1][col+1].color == "white") &&
                         !this.board.matrix[row-2][col+2]) ||
                         (this.board.matrix[row-1][col-1] && 
-                        (this.board.matrix[row-1][col-1].color == !startPiece.color) &&
+                        (this.board.matrix[row-1][col-1].color == "white") &&
                         !this.board.matrix[row-2][col-2])) {
                             mandatoryMove = true;
                             break;
@@ -83,27 +83,27 @@ class Checkers extends Game {
         // if there are mandatory captures, check if the current move is one of them
         let mandatoryMoveMade = false;
         if (mandatoryMove) {
-            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == 0)
+            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == "white")
             || (startPiece.toString().toUpperCase() == "Q")) {
                 if ((this.board.matrix[initRow+1][initCol+1] && 
-                    (this.board.matrix[initRow+1][initCol+1].color == !startPiece.color) &&
+                    (this.board.matrix[initRow+1][initCol+1].color == "black") &&
                     !this.board.matrix[initRow+2][initCol+2] &&
                     ((rows == 2) && (columns == 2))) ||
                     (this.board.matrix[initRow+1][initCol-1] && 
-                    (this.board.matrix[initRow+1][initCol-1].color == !startPiece.color) &&
+                    (this.board.matrix[initRow+1][initCol-1].color == "black") &&
                     !this.board.matrix[initRow+2][initCol-2]) &&
                     ((rows == 2) || (columns == -2))) {
                         mandatoryMoveMade = true;
                     }
             }
-            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == 1)
+            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == "black")
             || (startPiece.toString().toUpperCase() == "Q")) {
                 if ((this.board.matrix[initRow-1][initCol+1] && 
-                    (this.board.matrix[initRow-1][initCol+1].color == !startPiece.color) &&
+                    (this.board.matrix[initRow-1][initCol+1].color == "white") &&
                     !this.board.matrix[initRow-2][initCol+2] &&
                     ((rows == -2) || (columns == 2))) ||
                     (this.board.matrix[initRow-1][initCol-1] && 
-                    (this.board.matrix[initRow-1][initCol-1].color == !startPiece.color) &&
+                    (this.board.matrix[initRow-1][initCol-1].color == "white") &&
                     !this.board.matrix[initRow-2][initCol-2] &&
                     ((rows == -2) || (columns == -2)))) {
                         mandatoryMoveMade = true;
@@ -116,7 +116,7 @@ class Checkers extends Game {
                 case "P":
                     // check if it's a one step move and if the direction is right
                     if ((Math.abs(rows) == 1) && (Math.abs(columns) == 1)) {
-                        if (startPiece.color = "white") {
+                        if (startPiece.color == "white") {
                             if ((rows != 1) || (Math.abs(columns) != 1)) return false;
                         }
                         else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
@@ -130,14 +130,15 @@ class Checkers extends Game {
                         return false;
                     break;
             }
+        return true;
     }
 
     movePiece(piece, initialPos, finalPos) {
         switch (piece.toString().toUpperCase()) {
             case "P": {
                 // create the new piece at the final position
-                if (((piece.color == 0) && (finalPos[0] == 8)) ||
-                    ((piece.color == 1) && (finalPos[0] == 1)))
+                if (((piece.color == "white") && (finalPos[0] == 8)) ||
+                    ((piece.color == "black") && (finalPos[0] == 1)))
                     this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
                 else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
                 break;
