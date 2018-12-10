@@ -40,6 +40,31 @@ class Checkers extends Game {
         else return (new Array(nr1 - nr2)).fill(undefined).map((_, i) => Number(nr1) - i);
     }
 
+    findCaptureLeftUpCorner(row, col, color) {
+        return (this.board.matrix[row+1][col-1] && 
+                (this.board.matrix[row+1][col-1].color == color) &&
+                this.board.matrix[row+2][col-2] == "");
+    }
+
+    findCaptureRightUpCorner(row, col, color) {
+        return (this.board.matrix[row+1][col+1] && 
+                (this.board.matrix[row+1][col+1].color == color) &&
+                this.board.matrix[row+2][col+2] == "");
+    }
+
+    findCaptureLeftDownCorner(row, col, color) {
+        return (this.board.matrix[row-1][col-1] && 
+                (this.board.matrix[row-1][col-1].color == color) &&
+                this.board.matrix[row-2][col-2] == "");
+    }
+
+    findCaptureRightDownCorner(row, col, color) {
+        return (this.board.matrix[row-1][col+1] && 
+                (this.board.matrix[row-1][col+1].color == color) &&
+                this.board.matrix[row-2][col+2] == "");
+    }
+
+
     validMove(startPiece, initialPos, finalPos) {
         const rows = finalPos[0]-initialPos[0];
         const columns = finalPos[1]-initialPos[1];
@@ -54,53 +79,37 @@ class Checkers extends Game {
                 let piece = this.board.matrix[row][col];
                 
                 // if it.s a white Pawn / Queen, check the 2 corners above
-                if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
+                if (((piece instanceof Pawn) || (piece instanceof Queen)) &&
                 (startPiece.color == "white") && (piece.color == "white")) {
-                    if ((this.board.matrix[row+1][col+1] && 
-                        (this.board.matrix[row+1][col+1].color == "black") &&
-                        this.board.matrix[row+2][col+2] == "") ||
-                        (this.board.matrix[row+1][col-1] && 
-                        (this.board.matrix[row+1][col-1].color == "black") &&
-                        this.board.matrix[row+2][col-2] == "")) {
+                    if (findCaptureRightUpCorner(row, col, "black") ||
+                        findCaptureLeftUpCorner(row, col, "black")) {
                             mandatoryMove = true;
                             break;
                         }
                 }
                 // if it.s a black Pawn / Queen, check the 2 corners below
-                if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
+                if (((piece instanceof Pawn) || (piece instanceof Queen)) &&
                 (startPiece.color == "black") && (piece.color == "black")) {
-                    if ((this.board.matrix[row-1][col+1] && 
-                        (this.board.matrix[row-1][col+1].color == "white") &&
-                        this.board.matrix[row-2][col+2] == "") ||
-                        (this.board.matrix[row-1][col-1] && 
-                        (this.board.matrix[row-1][col-1].color == "white") &&
-                        this.board.matrix[row-2][col-2] == "")) {
+                    if (findCaptureRightDownCorner(row, col, "white") ||
+                        findCaptureLeftDownCorner(row, col, "white")) {
                             mandatoryMove = true;
                             break;
                         }
                 }
                 // if it.s a white Queen, also check the 2 corners below
-                if ((piece.toString().toUpperCase() == "Q") &&
+                if ((piece instanceof Queen) &&
                 (startPiece.color == "white") && (piece.color == "white")) {
-                    if ((this.board.matrix[row-1][col+1] && 
-                        (this.board.matrix[row-1][col+1].color == "black") &&
-                        this.board.matrix[row-2][col+2] == "") ||
-                        (this.board.matrix[row-1][col-1] && 
-                        (this.board.matrix[row-1][col-1].color == "black") &&
-                        this.board.matrix[row-2][col-2] == "")) {
+                    if (findCaptureRightDownCorner(row, col, "black") ||
+                        findCaptureLeftDownCorner(row, col, "black")) {
                             mandatoryMove = true;
                             break;
                         }
                 }
                 // if it.s a black Queen, also check the 2 corners above
-                if ((piece.toString().toUpperCase() == "Q") &&
+                if ((piece instanceof Queen) &&
                 (startPiece.color == "black") && (piece.color == "black")) {
-                    if ((this.board.matrix[row+1][col+1] && 
-                        (this.board.matrix[row+1][col+1].color == "white") &&
-                        this.board.matrix[row+2][col+2] == "") ||
-                        (this.board.matrix[row+1][col-1] && 
-                        (this.board.matrix[row+1][col-1].color == "white") &&
-                        this.board.matrix[row+2][col-2] == "")) {
+                    if (findCaptureRightUpCorner(row, col, "black") ||
+                        findCaptureLeftUpCorner(row, col, "black")) {
                             mandatoryMove = true;
                             break;
                         }
