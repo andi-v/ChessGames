@@ -147,21 +147,24 @@ class MovesInput extends React.Component {
 
     render() {
         return (
-            <p>
-                <label htmlFor="moveInput">WHITE Move: </label>
-                <input 
-                    type="text"
-                    id="moveInput"
-                    value={this.props.move}
-                    onChange={this.handleMoveChange}
-                />
-                <input
-                    type="button"
-                    id="moveButton"
-                    value="Move"
-                    onClick={this.props.onMoveClick}
-                />
-            </p>
+            <div>
+                <p>
+                    <label htmlFor="moveInput">{this.props.currentPlayer} Move: </label>
+                    <input 
+                        type="text"
+                        id="moveInput"
+                        value={this.props.move}
+                        onChange={this.handleMoveChange}
+                    />
+                    <input
+                        type="button"
+                        id="moveButton"
+                        value="Move"
+                        onClick={this.props.onMoveClick}
+                    />
+                </p>
+                <p>{this.props.invalidMove}</p>
+            </div>
         );
     }
 }
@@ -178,7 +181,9 @@ class App extends React.Component {
                         ["", "", "", "", "", "", "", "", ""],
                         ["", "", "", "", "", "", "", "", ""],
                         ["", "", "", "", "", "", "", "", ""]],
-            move: ""
+            currentPlayer: "WHITE",
+            move: "",
+            invalidMove: ""
         }
         this.handleChessSelection = this.handleChessSelection.bind(this);
         this.handleCheckersSelection = this.handleCheckersSelection.bind(this);
@@ -217,7 +222,14 @@ class App extends React.Component {
                         letterNumber[this.state.move.substr(1,1).toUpperCase()] +
                         this.state.move.substr(2,1) +
                         letterNumber[this.state.move.substr(3,1).toUpperCase()];
-        this.game.tryMove(newMove);
+        const moveResult = this.game.tryMove(newMove);
+        if (moveResult == "MOVE DONE") {
+            this.setState({invalidMove: ""});
+            if (this.state.currentPlayer == "WHITE")
+                this.setState({currentPlayer: "BLACK"});
+            else this.setState({currentPlayer: "WHITE"});
+        }
+        else this.setState({invalidMove: "INVALID MOVE"});
         this.setState({move: ""});
         this.setState({board: this.game.board.matrix});
     }
@@ -234,9 +246,11 @@ class App extends React.Component {
                     onPieceClick={this.handlePieceClick}
                 />
                 <MovesInput
+                    currentPlayer={this.state.currentPlayer}
                     move={this.state.move}
                     onMoveChange={this.handleMoveChange}
                     onMoveClick={this.handleMoveClick}
+                    invalidMove={this.state.invalidMove}
                 />
             </div>
         );

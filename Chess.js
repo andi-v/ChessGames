@@ -157,10 +157,12 @@ class Chess extends Game {
             if (this.validMove(startPiece, endPiece, finalPos[0]-initialPos[0], finalPos[1]-initialPos[1])) {
                 // check if the path is clear, except for Horses
                 if (((startPiece.toString().toUpperCase() != "H") && this.freePath(initialPos, finalPos))
-                    || (startPiece.toString().toUpperCase() == "H"))
-                    this.movePiece(startPiece, initialPos, finalPos);
+                    || (startPiece.toString().toUpperCase() == "H")) {
+                        this.movePiece(startPiece, initialPos, finalPos);
+                        return "MOVE DONE";
+                    }
             }
         }
-        else return "Invalid move!";
+        else return "INVALID MOVE";
     }
 }

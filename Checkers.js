@@ -36,8 +36,8 @@ class Checkers extends Game {
 
     range(nr1, nr2) {
         if (nr1 < nr2)
-            return (new Array(nr2 - nr1 - 1)).fill(undefined).map((_, i) => i + nr1 + 1);
-        else return (new Array(nr1 - nr2 - 1)).fill(undefined).map((_, i) => nr1 - i - 1);
+            return (new Array(nr2 - nr1)).fill(undefined).map((_, i) => i + Number(nr1));
+        else return (new Array(nr1 - nr2)).fill(undefined).map((_, i) => Number(nr1) - i);
     }
 
     validMove(startPiece, initialPos, finalPos) {
@@ -48,30 +48,59 @@ class Checkers extends Game {
         let mandatoryMove = false;
 
         // check if there is any piece of opposite color that must be captured
+        // extrage in alta fctie(startPiece)
         for (let row = 1; row <= 8; row++) {
             for (let col = 1; col <= 8; col++) {
                 let piece = this.board.matrix[row][col];
                 
+                // if it.s a white Pawn / Queen, check the 2 corners above
                 if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
                 (startPiece.color == "white") && (piece.color == "white")) {
                     if ((this.board.matrix[row+1][col+1] && 
                         (this.board.matrix[row+1][col+1].color == "black") &&
-                        !this.board.matrix[row+2][col+2]) ||
+                        this.board.matrix[row+2][col+2] == "") ||
                         (this.board.matrix[row+1][col-1] && 
                         (this.board.matrix[row+1][col-1].color == "black") &&
-                        !this.board.matrix[row+2][col-2])) {
+                        this.board.matrix[row+2][col-2] == "")) {
                             mandatoryMove = true;
                             break;
                         }
                 }
+                // if it.s a black Pawn / Queen, check the 2 corners below
                 if (["P", "Q"].includes(piece.toString().toUpperCase()) &&
                 (startPiece.color == "black") && (piece.color == "black")) {
                     if ((this.board.matrix[row-1][col+1] && 
                         (this.board.matrix[row-1][col+1].color == "white") &&
-                        !this.board.matrix[row-2][col+2]) ||
+                        this.board.matrix[row-2][col+2] == "") ||
                         (this.board.matrix[row-1][col-1] && 
                         (this.board.matrix[row-1][col-1].color == "white") &&
-                        !this.board.matrix[row-2][col-2])) {
+                        this.board.matrix[row-2][col-2] == "")) {
+                            mandatoryMove = true;
+                            break;
+                        }
+                }
+                // if it.s a white Queen, also check the 2 corners below
+                if ((piece.toString().toUpperCase() == "Q") &&
+                (startPiece.color == "white") && (piece.color == "white")) {
+                    if ((this.board.matrix[row-1][col+1] && 
+                        (this.board.matrix[row-1][col+1].color == "black") &&
+                        this.board.matrix[row-2][col+2] == "") ||
+                        (this.board.matrix[row-1][col-1] && 
+                        (this.board.matrix[row-1][col-1].color == "black") &&
+                        this.board.matrix[row-2][col-2] == "")) {
+                            mandatoryMove = true;
+                            break;
+                        }
+                }
+                // if it.s a black Queen, also check the 2 corners above
+                if ((piece.toString().toUpperCase() == "Q") &&
+                (startPiece.color == "black") && (piece.color == "black")) {
+                    if ((this.board.matrix[row+1][col+1] && 
+                        (this.board.matrix[row+1][col+1].color == "white") &&
+                        this.board.matrix[row+2][col+2] == "") ||
+                        (this.board.matrix[row+1][col-1] && 
+                        (this.board.matrix[row+1][col-1].color == "white") &&
+                        this.board.matrix[row+2][col-2] == "")) {
                             mandatoryMove = true;
                             break;
                         }
@@ -87,11 +116,11 @@ class Checkers extends Game {
             || (startPiece.toString().toUpperCase() == "Q")) {
                 if ((this.board.matrix[initRow+1][initCol+1] && 
                     (this.board.matrix[initRow+1][initCol+1].color == "black") &&
-                    !this.board.matrix[initRow+2][initCol+2] &&
+                    (this.board.matrix[initRow+2][initCol+2] == "") &&
                     ((rows == 2) && (columns == 2))) ||
                     (this.board.matrix[initRow+1][initCol-1] && 
                     (this.board.matrix[initRow+1][initCol-1].color == "black") &&
-                    !this.board.matrix[initRow+2][initCol-2]) &&
+                    (this.board.matrix[initRow+2][initCol-2] == "")) &&
                     ((rows == 2) || (columns == -2))) {
                         mandatoryMoveMade = true;
                     }
@@ -100,11 +129,11 @@ class Checkers extends Game {
             || (startPiece.toString().toUpperCase() == "Q")) {
                 if ((this.board.matrix[initRow-1][initCol+1] && 
                     (this.board.matrix[initRow-1][initCol+1].color == "white") &&
-                    !this.board.matrix[initRow-2][initCol+2] &&
+                    (this.board.matrix[initRow-2][initCol+2] == "") &&
                     ((rows == -2) || (columns == 2))) ||
                     (this.board.matrix[initRow-1][initCol-1] && 
                     (this.board.matrix[initRow-1][initCol-1].color == "white") &&
-                    !this.board.matrix[initRow-2][initCol-2] &&
+                    (this.board.matrix[initRow-2][initCol-2] == "") &&
                     ((rows == -2) || (columns == -2)))) {
                         mandatoryMoveMade = true;
                     }
@@ -147,7 +176,12 @@ class Checkers extends Game {
                 this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
                 break;
         }
-        this.board.matrix[initialPos[0]][initialPos[1]] = "";
+        let rows = this.range(initialPos[0], finalPos[0]);
+        let columns = this.range(initialPos[1], finalPos[1]);
+        if (rows.length > 1)
+            for (let i in rows)
+                this.board.matrix[rows[i]][columns[i]] = "";
+        else this.board.matrix[initialPos[0]][initialPos[1]] = "";
     }
 
     tryMove(newMove) {
@@ -160,8 +194,10 @@ class Checkers extends Game {
         if (startPiece && !endPiece) {
             // check if the piece can move at destination
             if (this.validMove(startPiece, initialPos, finalPos)) {
-                this.movePiece(startPiece, initialPos, finalPos)
+                this.movePiece(startPiece, initialPos, finalPos);
+                return "MOVE DONE";
             }
+            else return "INVALID MOVE";
         }
     }
 }
