@@ -5,7 +5,7 @@ class GameSelection extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="GameSelection-container">
                 <h2>Welcome! Please select the game you want to play:</h2>
                 <input
                     type="button"
