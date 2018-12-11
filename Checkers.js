@@ -3,6 +3,7 @@ class Checkers extends Game {
         super();
         this.board = new Board(8, 8);
         this.createInitialMatrix();
+        this.captureInProgress = false;;
     }
     
     createInitialMatrix() {
@@ -116,6 +117,7 @@ class Checkers extends Game {
         // if there are mandatory captures, check if the current move is one of them
         // extrage in mandatoryMoveMade(startPiece, rows, columns)
         if (this.findCapture(startPiece)) {
+            this.captureInProgress = true;
             if (startPiece instanceof Pawn) {
                 if (startPiece.color == "white") {
                     return ((this.findCaptureRightUpCorner(initRow, initCol, "black") &&
@@ -153,42 +155,36 @@ class Checkers extends Game {
                 }
             }
         }
-        else 
-            switch (startPiece.toString().toUpperCase()) {
-                case "P":
-                    // check if it's a one step move and if the direction is right
-                    if ((Math.abs(rows) == 1) && (Math.abs(columns) == 1)) {
-                        if (startPiece.color == "white") {
-                            if ((rows != 1) || (Math.abs(columns) != 1)) return false;
-                        }
-                        else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
-                    }
-                    // check if it's a 3+ steps move
-                    else if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
-                            return false;
-                    break;
-                case "Q":
-                    if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
-                        return false;
-                    break;
+        else if (startPiece instanceof Pawn) {
+            // check if it's a one step move and if the direction is right
+            if ((Math.abs(rows) == 1) && (Math.abs(columns) == 1)) {
+                if (startPiece.color == "white") {
+                    if ((rows != 1) || (Math.abs(columns) != 1)) return false;
+                }
+                else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
             }
+            // check if it's a 3+ steps move
+            else if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
+                return false;
+        }
+        else if (startPiece instanceof Queen)
+                if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
+                    return false;
         return true;
     }
 
     movePiece(piece, initialPos, finalPos) {
-        switch (piece.toString().toUpperCase()) {
-            case "P": {
-                // create the new piece at the final position
-                if (((piece.color == "white") && (finalPos[0] == 8)) ||
-                    ((piece.color == "black") && (finalPos[0] == 1)))
-                    this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
-                else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
-                break;
-            }
-            case "Q":   
+        if (piece instanceof Pawn) {
+            // create the new piece at the final position
+            if (((piece.color == "white") && (finalPos[0] == 8)) ||
+                ((piece.color == "black") && (finalPos[0] == 1)))
                 this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
-                break;
+            else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
         }
+        else 
+            if (piece instanceof Queen)
+                this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
+        
         let rows = this.range(initialPos[0], finalPos[0]);
         let columns = this.range(initialPos[1], finalPos[1]);
         if (rows.length > 1)
@@ -202,6 +198,7 @@ class Checkers extends Game {
         let finalPos = newMove.substr(2, 2);
         let startPiece = this.board.matrix[initialPos[0]][initialPos[1]];
         let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
+        let captureInProgress = false;
 
         // check if there's a piece at starting position with the right color
         if (startPiece && !endPiece && startPiece.color.toUpperCase() == currentPlayer) {
@@ -209,9 +206,12 @@ class Checkers extends Game {
             if (this.validMove(startPiece, initialPos, finalPos)) {
                 this.movePiece(startPiece, initialPos, finalPos);
                 let newPiece = this.board.matrix[finalPos[0]][finalPos[1]];
-                if (this.findCapture(newPiece))
+                if (this.captureInProgress && this.findCapture(newPiece))
                     return "PARTIAL CAPTURE";
-                else return "MOVE DONE";
+                else {
+                    this.captureInProgress = false;
+                    return "MOVE DONE";
+                }
             }
             else return "INVALID MOVE";
         }

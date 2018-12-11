@@ -79,43 +79,37 @@ class Chess extends Game {
 
     // check if the moving piece can jump that many rows and columns, in that direction
     validMove(startPiece, endPiece, rows, columns) {
-        switch (startPiece.toString().toUpperCase()) {
-            case "P":
-                if (!endPiece) {
-                    // The Pawn rules for moving to an empty location
-                    if (startPiece.color == "white") {
-                        if ((rows != 1) || (columns != 0)) return false;
-                    }
-                    else if ((rows != -1) || (columns != 0)) return false;
+        if (startPiece instanceof Pawn) {
+            if (!endPiece) {
+                // The Pawn rules for moving to an empty location
+                if (startPiece.color == "white") {
+                    if ((rows != 1) || (columns != 0)) return false;
                 }
-                else {
-                    // The Pawn rules for capturing another piece
-                    if (startPiece.color == "white") {
-                        if ((rows != 1) || (Math.abs(columns) != 1)) return false;
-                    }
-                    else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+                else if ((rows != -1) || (columns != 0)) return false;
+            }
+            else {
+                // The Pawn rules for capturing another piece
+                if (startPiece.color == "white") {
+                    if ((rows != 1) || (Math.abs(columns) != 1)) return false;
                 }
-                break;
-            case "R":
-                if (rows * columns != 0) return false;
-                break;
-            case "H":
-                if ((rows * columns != 2) && (rows * columns != -2))
-                    return false;
-                break;
-            case "B":
-                if (Math.abs(rows) != Math.abs(columns))
-                    return false;
-                break;
-            case "Q":
-                if ((rows * columns != 0) && (Math.abs(rows) != Math.abs(columns)))
-                    return false;
-                break;
-            case "K":
-                if ((Math.abs(rows) > 1) || (Math.abs(columns) > 1))
-                    return false;
-                break;
+                else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+            }
         }
+        if (startPiece instanceof Rook)
+            if (rows * columns != 0) return false;
+        if (startPiece instanceof Horse)
+            if ((rows * columns != 2) && (rows * columns != -2))
+                return false;
+        if (startPiece instanceof Bishop)
+            if (Math.abs(rows) != Math.abs(columns))
+                return false;
+        if (startPiece instanceof Queen)
+            if ((rows * columns != 0) && (Math.abs(rows) != Math.abs(columns)))
+                return false;
+        if (startPiece instanceof King)
+            if ((Math.abs(rows) > 1) || (Math.abs(columns) > 1))
+                return false;
+        
         // Two pieces of the same color cannot capture each other
         if (endPiece && (startPiece.color == endPiece.color))
             return false;
@@ -123,25 +117,23 @@ class Chess extends Game {
     }
 
     movePiece(piece, initialPos, finalPos) {
-        switch (piece.toString().toUpperCase()) {
-            case "P": {
-                if (((piece.color == "white") && (finalPos[0] == 8)) ||
-                    ((piece.color == "black") && (finalPos[0] == 1)))
-                    this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
-                else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
-                break;
-            }  
-            case "R":   this.board.matrix[finalPos[0]][finalPos[1]] = new Rook(piece.color);
-                        break;
-            case "H":   this.board.matrix[finalPos[0]][finalPos[1]] = new Horse(piece.color);
-                        break;
-            case "B":   this.board.matrix[finalPos[0]][finalPos[1]] = new Bishop(piece.color);
-                        break;
-            case "Q":   this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
-                        break;
-            case "K":   this.board.matrix[finalPos[0]][finalPos[1]] = new King(piece.color);
-                        break;
+        if (piece instanceof Pawn) {
+            if (((piece.color == "white") && (finalPos[0] == 8)) ||
+                ((piece.color == "black") && (finalPos[0] == 1)))
+                this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
+            else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
         }
+        if (piece instanceof Rook)
+            this.board.matrix[finalPos[0]][finalPos[1]] = new Rook(piece.color);
+        if (piece instanceof Horse)
+            this.board.matrix[finalPos[0]][finalPos[1]] = new Horse(piece.color);
+        if (piece instanceof Bishop)
+            this.board.matrix[finalPos[0]][finalPos[1]] = new Bishop(piece.color);
+        if (piece instanceof Queen)
+            this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
+        if (piece instanceof King)
+            this.board.matrix[finalPos[0]][finalPos[1]] = new King(piece.color);
+        
         this.board.matrix[initialPos[0]][initialPos[1]] = "";
     }
 

@@ -1,3 +1,8 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .grid-container {
     display: grid;
     width: 271px;
@@ -8,9 +13,14 @@
 .grid-container > div {
     text-align: center;
     line-height: 30px;
-    font-size: 18px;
+    font-family: "Times New Roman";
+    font-size: 22px;
     border-style: solid;
     border-width: 1px 1px 0 0;
+}
+
+.grid-container > div.column, div.row {
+    font-size: 18px;
 }
 
 [class="1A"], [class="1C"], [class="1E"], [class="1G"],
