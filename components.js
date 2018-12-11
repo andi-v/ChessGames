@@ -163,7 +163,7 @@ class MovesInput extends React.Component {
                         onClick={this.props.onMoveClick}
                     />
                 </p>
-                <p>{this.props.invalidMove}</p>
+                <p id="moveResult">{this.props.moveResult}</p>
             </div>
         );
     }
@@ -183,7 +183,7 @@ class App extends React.Component {
                         ["", "", "", "", "", "", "", "", ""]],
             currentPlayer: "WHITE",
             move: "",
-            invalidMove: ""
+            moveResult: ""
         }
         this.handleChessSelection = this.handleChessSelection.bind(this);
         this.handleCheckersSelection = this.handleCheckersSelection.bind(this);
@@ -222,14 +222,17 @@ class App extends React.Component {
                         letterNumber[this.state.move.substr(1,1).toUpperCase()] +
                         this.state.move.substr(2,1) +
                         letterNumber[this.state.move.substr(3,1).toUpperCase()];
-        const moveResult = this.game.tryMove(newMove);
+        const moveResult = this.game.tryMove(newMove, this.state.currentPlayer);
         if (moveResult == "MOVE DONE") {
-            this.setState({invalidMove: ""});
+            this.setState({moveResult: ""});
             if (this.state.currentPlayer == "WHITE")
                 this.setState({currentPlayer: "BLACK"});
             else this.setState({currentPlayer: "WHITE"});
         }
-        else this.setState({invalidMove: "INVALID MOVE"});
+        else if (moveResult == "PARTIAL CAPTURE") {
+            this.setState({moveResult: "PARTIAL CAPTURE"});
+        }
+        else this.setState({moveResult: "INVALID MOVE"});
         this.setState({move: ""});
         this.setState({board: this.game.board.matrix});
     }
@@ -250,7 +253,7 @@ class App extends React.Component {
                     move={this.state.move}
                     onMoveChange={this.handleMoveChange}
                     onMoveClick={this.handleMoveClick}
-                    invalidMove={this.state.invalidMove}
+                    moveResult={this.state.moveResult}
                 />
             </div>
         );

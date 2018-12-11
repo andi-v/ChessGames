@@ -41,39 +41,37 @@ class Checkers extends Game {
     }
 
     findCaptureLeftUpCorner(row, col, color) {
-        return (this.board.matrix[row+1][col-1] && 
+        if ((row < 7) && (col > 2))
+            return (this.board.matrix[row+1][col-1] && 
                 (this.board.matrix[row+1][col-1].color == color) &&
                 this.board.matrix[row+2][col-2] == "");
     }
 
     findCaptureRightUpCorner(row, col, color) {
-        return (this.board.matrix[row+1][col+1] && 
+        if ((row < 7) && (col < 7))
+            return (this.board.matrix[row+1][col+1] && 
                 (this.board.matrix[row+1][col+1].color == color) &&
                 this.board.matrix[row+2][col+2] == "");
     }
 
     findCaptureLeftDownCorner(row, col, color) {
-        return (this.board.matrix[row-1][col-1] && 
+        if ((row > 2) && (col > 2))
+            return (this.board.matrix[row-1][col-1] && 
                 (this.board.matrix[row-1][col-1].color == color) &&
                 this.board.matrix[row-2][col-2] == "");
     }
 
     findCaptureRightDownCorner(row, col, color) {
-        return (this.board.matrix[row-1][col+1] && 
+        if ((row > 2) && (col < 7))
+            return (this.board.matrix[row-1][col+1] && 
                 (this.board.matrix[row-1][col+1].color == color) &&
                 this.board.matrix[row-2][col+2] == "");
     }
 
-
-    validMove(startPiece, initialPos, finalPos) {
-        const rows = finalPos[0]-initialPos[0];
-        const columns = finalPos[1]-initialPos[1];
-        let initRow = +initialPos[0], finRow = +finalPos[0],
-            initCol = +initialPos[1], finCol = +finalPos[1];
+    findCapture(startPiece) {
         let mandatoryMove = false;
 
         // check if there is any piece of opposite color that must be captured
-        // extrage in alta fctie(startPiece)
         for (let row = 1; row <= 8; row++) {
             for (let col = 1; col <= 8; col++) {
                 let piece = this.board.matrix[row][col];
@@ -102,41 +100,58 @@ class Checkers extends Game {
                             this.findCaptureLeftDownCorner(row, col, "white")
                     }
                 }
-                if (mandatoryMove) break;
+                if (mandatoryMove) return true;
             }
-            if (mandatoryMove) break;
+            if (mandatoryMove) return true;
         }
+        return false;
+    }
 
+    validMove(startPiece, initialPos, finalPos) {
+        const rows = finalPos[0]-initialPos[0];
+        const columns = finalPos[1]-initialPos[1];
+        let initRow = +initialPos[0], finRow = +finalPos[0],
+            initCol = +initialPos[1], finCol = +finalPos[1];
+        
         // if there are mandatory captures, check if the current move is one of them
-        let mandatoryMoveMade = false;
-        if (mandatoryMove) {
-            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == "white")
-            || (startPiece.toString().toUpperCase() == "Q")) {
-                if ((this.board.matrix[initRow+1][initCol+1] && 
-                    (this.board.matrix[initRow+1][initCol+1].color == "black") &&
-                    (this.board.matrix[initRow+2][initCol+2] == "") &&
-                    ((rows == 2) && (columns == 2))) ||
-                    (this.board.matrix[initRow+1][initCol-1] && 
-                    (this.board.matrix[initRow+1][initCol-1].color == "black") &&
-                    (this.board.matrix[initRow+2][initCol-2] == "")) &&
-                    ((rows == 2) || (columns == -2))) {
-                        mandatoryMoveMade = true;
-                    }
+        // extrage in mandatoryMoveMade(startPiece, rows, columns)
+        if (this.findCapture(startPiece)) {
+            if (startPiece instanceof Pawn) {
+                if (startPiece.color == "white") {
+                    return ((this.findCaptureRightUpCorner(initRow, initCol, "black") &&
+                        (rows == 2) && (columns == 2)) ||
+                        (this.findCaptureLeftUpCorner(initRow, initCol, "black") &&
+                        (rows == 2) && (columns == -2)));
+                }
+                else if (startPiece.color == "black") {
+                    return ((this.findCaptureRightDownCorner(initRow, initCol, "white") &&
+                        (rows == -2) && (columns == 2)) ||
+                        (this.findCaptureLeftDownCorner(initRow, initCol, "white") &&
+                        (rows == -2) && (columns == -2)));
+                }
             }
-            if ((startPiece.toString().toUpperCase() == "P") && (startPiece.color == "black")
-            || (startPiece.toString().toUpperCase() == "Q")) {
-                if ((this.board.matrix[initRow-1][initCol+1] && 
-                    (this.board.matrix[initRow-1][initCol+1].color == "white") &&
-                    (this.board.matrix[initRow-2][initCol+2] == "") &&
-                    ((rows == -2) || (columns == 2))) ||
-                    (this.board.matrix[initRow-1][initCol-1] && 
-                    (this.board.matrix[initRow-1][initCol-1].color == "white") &&
-                    (this.board.matrix[initRow-2][initCol-2] == "") &&
-                    ((rows == -2) || (columns == -2)))) {
-                        mandatoryMoveMade = true;
-                    }
+            else if (startPiece instanceof Queen) {
+                if (startPiece.color == "white") {
+                    return ((this.findCaptureRightUpCorner(initRow, initCol, "black") &&
+                        (rows == 2) && (columns == 2)) ||
+                        (this.findCaptureLeftUpCorner(initRow, initCol, "black") &&
+                        (rows == 2) && (columns == -2)) ||
+                        (this.findCaptureRightDownCorner(initRow, initCol, "black") &&
+                        (rows == -2) && (columns == 2)) ||
+                        (this.findCaptureLeftDownCorner(initRow, initCol, "black") &&
+                        (rows == -2) && (columns == -2)));
+                }
+                else if (startPiece.color == "black") {
+                    return ((this.findCaptureRightUpCorner(initRow, initCol, "white") &&
+                        (rows == 2) && (columns == 2)) ||
+                        (this.findCaptureLeftUpCorner(initRow, initCol, "white") &&
+                        (rows == 2) && (columns == -2)) ||
+                        (this.findCaptureRightDownCorner(initRow, initCol, "white") &&
+                        (rows == -2) && (columns == 2)) ||
+                        (this.findCaptureLeftDownCorner(initRow, initCol, "white") &&
+                        (rows == -2) && (columns == -2)));
+                }
             }
-            if (!mandatoryMoveMade) return false;
         }
         else 
             switch (startPiece.toString().toUpperCase()) {
@@ -182,20 +197,24 @@ class Checkers extends Game {
         else this.board.matrix[initialPos[0]][initialPos[1]] = "";
     }
 
-    tryMove(newMove) {
+    tryMove(newMove, currentPlayer) {
         let initialPos = newMove.substr(0, 2);
         let finalPos = newMove.substr(2, 2);
         let startPiece = this.board.matrix[initialPos[0]][initialPos[1]];
         let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
 
-        // check if there's a piece at starting position
-        if (startPiece && !endPiece) {
+        // check if there's a piece at starting position with the right color
+        if (startPiece && !endPiece && startPiece.color.toUpperCase() == currentPlayer) {
             // check if the piece can move at destination
             if (this.validMove(startPiece, initialPos, finalPos)) {
                 this.movePiece(startPiece, initialPos, finalPos);
-                return "MOVE DONE";
+                let newPiece = this.board.matrix[finalPos[0]][finalPos[1]];
+                if (this.findCapture(newPiece))
+                    return "PARTIAL CAPTURE";
+                else return "MOVE DONE";
             }
             else return "INVALID MOVE";
         }
+        else return "INVALID MOVE";
     }
 }

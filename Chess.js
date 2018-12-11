@@ -145,23 +145,24 @@ class Chess extends Game {
         this.board.matrix[initialPos[0]][initialPos[1]] = "";
     }
 
-    tryMove(newMove) {
+    tryMove(newMove, currentPlayer) {
         let initialPos = newMove.substr(0, 2);
         let finalPos = newMove.substr(2, 2);
         let startPiece = this.board.matrix[initialPos[0]][initialPos[1]];
         let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
         
-        // check if there's a piece at starting position
-        if (startPiece) {
+        // check if there's a piece at starting position with the right color
+        if (startPiece && startPiece.color.toUpperCase() == currentPlayer) {
             // check if the piece can move at destination
             if (this.validMove(startPiece, endPiece, finalPos[0]-initialPos[0], finalPos[1]-initialPos[1])) {
                 // check if the path is clear, except for Horses
-                if (((startPiece.toString().toUpperCase() != "H") && this.freePath(initialPos, finalPos))
-                    || (startPiece.toString().toUpperCase() == "H")) {
-                        this.movePiece(startPiece, initialPos, finalPos);
-                        return "MOVE DONE";
-                    }
+                if ((!(startPiece instanceof Horse) && this.freePath(initialPos, finalPos))
+                || (startPiece instanceof Horse)) {
+                    this.movePiece(startPiece, initialPos, finalPos);
+                    return "MOVE DONE";
+                }
             }
+            else return "INVALID MOVE";
         }
         else return "INVALID MOVE";
     }
