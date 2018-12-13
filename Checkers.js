@@ -69,6 +69,33 @@ class Checkers extends Game {
                 this.board.matrix[row-2][col+2] == "");
     }
 
+    findNearCapture(piece, row, col) {
+        if (piece instanceof Queen) {
+            if (piece.color == "white") {
+                return (this.findCaptureRightUpCorner(row, col, "black") ||
+                    this.findCaptureLeftUpCorner(row, col, "black") ||
+                    this.findCaptureRightDownCorner(row, col, "black") ||
+                    this.findCaptureLeftDownCorner(row, col, "black"));
+            }
+            else if (piece.color == "black") {
+                return (this.findCaptureRightUpCorner(row, col, "white") ||
+                    this.findCaptureLeftUpCorner(row, col, "white") ||
+                    this.findCaptureRightDownCorner(row, col, "white") ||
+                    this.findCaptureLeftDownCorner(row, col, "white"));
+            }
+        }
+        else if (piece instanceof Pawn) {
+            if (piece.color == "white") {
+                return (this.findCaptureRightUpCorner(row, col, "black") ||
+                    this.findCaptureLeftUpCorner(row, col, "black"));
+            }
+            else if (piece.color == "black") {
+                return (this.findCaptureRightDownCorner(row, col, "white") ||
+                    this.findCaptureLeftDownCorner(row, col, "white"));
+            }
+        }
+    }
+
     findCapture(startPiece) {
         let mandatoryMove = false;
 
@@ -77,30 +104,9 @@ class Checkers extends Game {
             for (let col = 1; col <= 8; col++) {
                 let piece = this.board.matrix[row][col];
                 
-                if (piece instanceof Queen) {
-                    if ((startPiece.color == "white") && (piece.color == "white")) {
-                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "black") ||
-                            this.findCaptureLeftUpCorner(row, col, "black") ||
-                            this.findCaptureRightDownCorner(row, col, "black") ||
-                            this.findCaptureLeftDownCorner(row, col, "black");
-                    }
-                    else if ((startPiece.color == "black") && (piece.color == "black")) {
-                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "white") ||
-                            this.findCaptureLeftUpCorner(row, col, "white") ||
-                            this.findCaptureRightDownCorner(row, col, "white") ||
-                            this.findCaptureLeftDownCorner(row, col, "white")
-                    }
-                }
-                else if (piece instanceof Pawn) {
-                    if ((startPiece.color == "white") && (piece.color == "white")) {
-                        mandatoryMove = this.findCaptureRightUpCorner(row, col, "black") ||
-                            this.findCaptureLeftUpCorner(row, col, "black")
-                    }
-                    else if ((startPiece.color == "black") && (piece.color == "black")) {
-                        mandatoryMove = this.findCaptureRightDownCorner(row, col, "white") ||
-                            this.findCaptureLeftDownCorner(row, col, "white")
-                    }
-                }
+                if (((startPiece.color == "white") && (piece.color == "white")) ||
+                ((startPiece.color == "black") && (piece.color == "black")))
+                    mandatoryMove = this.findNearCapture(piece, row, col);
                 if (mandatoryMove) return true;
             }
         }
@@ -203,7 +209,7 @@ class Checkers extends Game {
             if (this.validMove(startPiece, initialPos, finalPos)) {
                 this.movePiece(startPiece, initialPos, finalPos);
                 let newPiece = this.board.matrix[finalPos[0]][finalPos[1]];
-                if (this.captureInProgress && this.findCapture(newPiece))
+                if (this.captureInProgress && this.findNearCapture(newPiece, +finalPos[0], +finalPos[1]))
                     return "PARTIAL CAPTURE";
                 else {
                     this.captureInProgress = false;

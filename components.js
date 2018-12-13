@@ -210,12 +210,12 @@ class App extends React.Component {
 
     handleChessClick() {
         this.game = new Chess();
-        this.setState({board: this.game.board.matrix, game: "Chess"});
+        this.setState({board: this.game.board.matrix, game: "Chess", currentPlayer: "WHITE"});
     }
 
     handleCheckersClick() {
         this.game = new Checkers();
-        this.setState({board: this.game.board.matrix, game: "Checkers"});
+        this.setState({board: this.game.board.matrix, game: "Checkers", currentPlayer: "WHITE"});
     }
 
     handleLettersClick() {
