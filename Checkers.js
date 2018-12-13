@@ -103,7 +103,6 @@ class Checkers extends Game {
                 }
                 if (mandatoryMove) return true;
             }
-            if (mandatoryMove) return true;
         }
         return false;
     }
@@ -115,7 +114,6 @@ class Checkers extends Game {
             initCol = +initialPos[1], finCol = +finalPos[1];
         
         // if there are mandatory captures, check if the current move is one of them
-        // extrage in mandatoryMoveMade(startPiece, rows, columns)
         if (this.findCapture(startPiece)) {
             this.captureInProgress = true;
             if (startPiece instanceof Pawn) {
@@ -198,7 +196,6 @@ class Checkers extends Game {
         let finalPos = newMove.substr(2, 2);
         let startPiece = this.board.matrix[initialPos[0]][initialPos[1]];
         let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
-        let captureInProgress = false;
 
         // check if there's a piece at starting position with the right color
         if (startPiece && !endPiece && startPiece.color.toUpperCase() == currentPlayer) {
