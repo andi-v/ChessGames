@@ -51,6 +51,14 @@ class Chess extends Game {
         else return (new Array(nr1 - nr2 - 1)).fill(undefined).map((_, i) => nr1 - i - 1);
     }
 
+    getPiece(row, col) {
+        return this.board.matrix[row][col];
+    }
+
+    setPiece(row, col, piece) {
+        this.board.matrix[row][col] = piece;
+    }
+
     // checks if the path from initial to final position has no pieces
     // only the Horse can jump over other pieces
     freePath(initialPos, finalPos) {
@@ -58,12 +66,12 @@ class Chess extends Game {
             initCol = +initialPos[1], finCol = +finalPos[1];
         if (initCol == finCol && Math.abs(finRow - initRow) > 1) {
             for (let row of this.range(initRow, finRow))
-                if (this.board.matrix[row][initCol])
+                if (this.getPiece(row, initCol))
                     return false;
         }
         else if (initRow == finRow && Math.abs(finCol - initCol) > 1) {
             for (let col of this.range(initCol, finCol))
-                if (this.board.matrix[initRow][col])
+                if (this.getPiece(initRow, col))
                     return false;
         }
         else if (Math.abs(finRow - initRow) == Math.abs(finCol - initCol) &&
@@ -71,7 +79,7 @@ class Chess extends Game {
             let rows = this.range(initRow, finRow);
             let columns = this.range(initCol, finCol);
             for (let i in rows)
-                if (this.board.matrix[rows[i]][columns[i]])
+                if (this.getPiece(rows[i], columns[i]))
                     return false;
         }
         return true;
@@ -120,28 +128,28 @@ class Chess extends Game {
         if (piece instanceof Pawn) {
             if (((piece.color == "white") && (finalPos[0] == 8)) ||
                 ((piece.color == "black") && (finalPos[0] == 1)))
-                this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
-            else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
+                this.setPiece(finalPos[0], finalPos[1], new Queen(piece.color));
+            else this.setPiece(finalPos[0], finalPos[1], new Pawn(piece.color));
         }
         if (piece instanceof Rook)
-            this.board.matrix[finalPos[0]][finalPos[1]] = new Rook(piece.color);
+            this.setPiece(finalPos[0], finalPos[1], new Rook(piece.color));
         if (piece instanceof Horse)
-            this.board.matrix[finalPos[0]][finalPos[1]] = new Horse(piece.color);
+            this.setPiece(finalPos[0], finalPos[1], new Horse(piece.color));
         if (piece instanceof Bishop)
-            this.board.matrix[finalPos[0]][finalPos[1]] = new Bishop(piece.color);
+            this.setPiece(finalPos[0], finalPos[1], new Bishop(piece.color));
         if (piece instanceof Queen)
-            this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
+            this.setPiece(finalPos[0], finalPos[1], new Queen(piece.color));
         if (piece instanceof King)
-            this.board.matrix[finalPos[0]][finalPos[1]] = new King(piece.color);
+            this.setPiece(finalPos[0], finalPos[1], new King(piece.color));
         
-        this.board.matrix[initialPos[0]][initialPos[1]] = "";
+        this.setPiece(initialPos[0], initialPos[1], "");
     }
 
     tryMove(newMove, currentPlayer) {
         let initialPos = newMove.substr(0, 2);
         let finalPos = newMove.substr(2, 2);
-        let startPiece = this.board.matrix[initialPos[0]][initialPos[1]];
-        let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
+        let startPiece = this.getPiece(initialPos[0], initialPos[1]);
+        let endPiece = this.getPiece(finalPos[0], finalPos[1]);
         
         // check if there's a piece at starting position with the right color
         if (startPiece && startPiece.color.toUpperCase() == currentPlayer) {
