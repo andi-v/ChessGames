@@ -16,23 +16,10 @@ class Chess extends Game {
         m[1][4] = new Queen("white");
         m[1][5] = new King("white");
 
-        m[2][1] = new Pawn("white");
-        m[2][2] = new Pawn("white");
-        m[2][3] = new Pawn("white");
-        m[2][4] = new Pawn("white");
-        m[2][5] = new Pawn("white");
-        m[2][6] = new Pawn("white");
-        m[2][7] = new Pawn("white");
-        m[2][8] = new Pawn("white");
-
-        m[7][1] = new Pawn("black");
-        m[7][2] = new Pawn("black");
-        m[7][3] = new Pawn("black");
-        m[7][4] = new Pawn("black");
-        m[7][5] = new Pawn("black");
-        m[7][6] = new Pawn("black");
-        m[7][7] = new Pawn("black");
-        m[7][8] = new Pawn("black");
+        for (let col = 1; col <= 8; col++) {
+            m[2][col] = new Pawn("white");
+            m[7][col] = new Pawn("black");
+        }
 
         m[8][1] = new Rook("black");
         m[8][8] = new Rook("black");

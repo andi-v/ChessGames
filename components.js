@@ -181,23 +181,25 @@ class App extends React.Component {
 
     handleMoveClick() {
         const letterNumber = {A:1, B:2, C:3, D:4, E:5, F:6, G:7, H:8}
+        let newState = this.state;
         let newMove = this.state.move.substr(0,1) + 
                         letterNumber[this.state.move.substr(1,1).toUpperCase()] +
                         this.state.move.substr(2,1) +
                         letterNumber[this.state.move.substr(3,1).toUpperCase()];
         const moveResult = this.game.tryMove(newMove, this.state.currentPlayer);
         if (moveResult == "MOVE DONE") {
-            this.setState({moveResult: ""});
+            newState.moveResult = "";
             if (this.state.currentPlayer == "WHITE")
-                this.setState({currentPlayer: "BLACK"});
-            else this.setState({currentPlayer: "WHITE"});
+                newState.currentPlayer = "BLACK";
+            else newState.currentPlayer = "WHITE";
         }
         else if (moveResult == "PARTIAL CAPTURE") {
-            this.setState({moveResult: "PARTIAL CAPTURE"});
+            newState.moveResult = "PARTIAL CAPTURE";
         }
-        else this.setState({moveResult: "INVALID MOVE"});
-        this.setState({move: ""});
-        this.setState({board: this.game.board.matrix});
+        else newState.moveResult = "INVALID MOVE";
+        newState.move = "";
+        newState.board = this.game.board.matrix;
+        this.setState(newState);
     }
 
     render () {
