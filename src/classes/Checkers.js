@@ -1,6 +1,8 @@
-class Checkers extends Game {
+import Board from './Board'
+import { Pawn, Queen } from './Pieces.js'
+
+class Checkers {
     constructor() {
-        super();
         this.board = new Board(8, 8);
         this.createInitialMatrix();
         this.captureInProgress = false;;
@@ -44,40 +46,40 @@ class Checkers extends Game {
     findCaptureLeftUpCorner(row, col, color) {
         if ((row < 7) && (col > 2))
             return (this.board.matrix[row+1][col-1] && 
-                (this.board.matrix[row+1][col-1].color == color) &&
-                this.board.matrix[row+2][col-2] == "");
+                (this.board.matrix[row+1][col-1].color === color) &&
+                this.board.matrix[row+2][col-2] === "");
     }
 
     findCaptureRightUpCorner(row, col, color) {
         if ((row < 7) && (col < 7))
             return (this.board.matrix[row+1][col+1] && 
-                (this.board.matrix[row+1][col+1].color == color) &&
-                this.board.matrix[row+2][col+2] == "");
+                (this.board.matrix[row+1][col+1].color === color) &&
+                this.board.matrix[row+2][col+2] === "");
     }
 
     findCaptureLeftDownCorner(row, col, color) {
         if ((row > 2) && (col > 2))
             return (this.board.matrix[row-1][col-1] && 
-                (this.board.matrix[row-1][col-1].color == color) &&
-                this.board.matrix[row-2][col-2] == "");
+                (this.board.matrix[row-1][col-1].color === color) &&
+                this.board.matrix[row-2][col-2] === "");
     }
 
     findCaptureRightDownCorner(row, col, color) {
         if ((row > 2) && (col < 7))
             return (this.board.matrix[row-1][col+1] && 
-                (this.board.matrix[row-1][col+1].color == color) &&
-                this.board.matrix[row-2][col+2] == "");
+                (this.board.matrix[row-1][col+1].color === color) &&
+                this.board.matrix[row-2][col+2] === "");
     }
 
     findNearCapture(piece, row, col) {
         if (piece instanceof Queen) {
-            if (piece.color == "white") {
+            if (piece.color === "white") {
                 return (this.findCaptureRightUpCorner(row, col, "black") ||
                     this.findCaptureLeftUpCorner(row, col, "black") ||
                     this.findCaptureRightDownCorner(row, col, "black") ||
                     this.findCaptureLeftDownCorner(row, col, "black"));
             }
-            else if (piece.color == "black") {
+            else if (piece.color === "black") {
                 return (this.findCaptureRightUpCorner(row, col, "white") ||
                     this.findCaptureLeftUpCorner(row, col, "white") ||
                     this.findCaptureRightDownCorner(row, col, "white") ||
@@ -85,11 +87,11 @@ class Checkers extends Game {
             }
         }
         else if (piece instanceof Pawn) {
-            if (piece.color == "white") {
+            if (piece.color === "white") {
                 return (this.findCaptureRightUpCorner(row, col, "black") ||
                     this.findCaptureLeftUpCorner(row, col, "black"));
             }
-            else if (piece.color == "black") {
+            else if (piece.color === "black") {
                 return (this.findCaptureRightDownCorner(row, col, "white") ||
                     this.findCaptureLeftDownCorner(row, col, "white"));
             }
@@ -104,8 +106,8 @@ class Checkers extends Game {
             for (let col = 1; col <= 8; col++) {
                 let piece = this.board.matrix[row][col];
                 
-                if (((startPiece.color == "white") && (piece.color == "white")) ||
-                ((startPiece.color == "black") && (piece.color == "black")))
+                if (((startPiece.color === "white") && (piece.color === "white")) ||
+                ((startPiece.color === "black") && (piece.color === "black")))
                     mandatoryMove = this.findNearCapture(piece, row, col);
                 if (mandatoryMove) return true;
             }
@@ -123,56 +125,56 @@ class Checkers extends Game {
         if (this.findCapture(startPiece)) {
             this.captureInProgress = true;
             if (startPiece instanceof Pawn) {
-                if (startPiece.color == "white") {
+                if (startPiece.color === "white") {
                     return ((this.findCaptureRightUpCorner(initRow, initCol, "black") &&
-                        (rows == 2) && (columns == 2)) ||
+                        (rows === 2) && (columns === 2)) ||
                         (this.findCaptureLeftUpCorner(initRow, initCol, "black") &&
-                        (rows == 2) && (columns == -2)));
+                        (rows === 2) && (columns === -2)));
                 }
-                else if (startPiece.color == "black") {
+                else if (startPiece.color === "black") {
                     return ((this.findCaptureRightDownCorner(initRow, initCol, "white") &&
-                        (rows == -2) && (columns == 2)) ||
+                        (rows === -2) && (columns === 2)) ||
                         (this.findCaptureLeftDownCorner(initRow, initCol, "white") &&
-                        (rows == -2) && (columns == -2)));
+                        (rows === -2) && (columns === -2)));
                 }
             }
             else if (startPiece instanceof Queen) {
-                if (startPiece.color == "white") {
+                if (startPiece.color === "white") {
                     return ((this.findCaptureRightUpCorner(initRow, initCol, "black") &&
-                        (rows == 2) && (columns == 2)) ||
+                        (rows === 2) && (columns === 2)) ||
                         (this.findCaptureLeftUpCorner(initRow, initCol, "black") &&
-                        (rows == 2) && (columns == -2)) ||
+                        (rows === 2) && (columns === -2)) ||
                         (this.findCaptureRightDownCorner(initRow, initCol, "black") &&
-                        (rows == -2) && (columns == 2)) ||
+                        (rows === -2) && (columns === 2)) ||
                         (this.findCaptureLeftDownCorner(initRow, initCol, "black") &&
-                        (rows == -2) && (columns == -2)));
+                        (rows === -2) && (columns === -2)));
                 }
-                else if (startPiece.color == "black") {
+                else if (startPiece.color === "black") {
                     return ((this.findCaptureRightUpCorner(initRow, initCol, "white") &&
-                        (rows == 2) && (columns == 2)) ||
+                        (rows === 2) && (columns === 2)) ||
                         (this.findCaptureLeftUpCorner(initRow, initCol, "white") &&
-                        (rows == 2) && (columns == -2)) ||
+                        (rows === 2) && (columns === -2)) ||
                         (this.findCaptureRightDownCorner(initRow, initCol, "white") &&
-                        (rows == -2) && (columns == 2)) ||
+                        (rows === -2) && (columns === 2)) ||
                         (this.findCaptureLeftDownCorner(initRow, initCol, "white") &&
-                        (rows == -2) && (columns == -2)));
+                        (rows === -2) && (columns === -2)));
                 }
             }
         }
         else if (startPiece instanceof Pawn) {
             // check if it's a one step move and if the direction is right
-            if ((Math.abs(rows) == 1) && (Math.abs(columns) == 1)) {
-                if (startPiece.color == "white") {
-                    if ((rows != 1) || (Math.abs(columns) != 1)) return false;
+            if ((Math.abs(rows) === 1) && (Math.abs(columns) === 1)) {
+                if (startPiece.color === "white") {
+                    if ((rows !== 1) || (Math.abs(columns) !== 1)) return false;
                 }
-                else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+                else if ((rows !== -1) || (Math.abs(columns) !== 1)) return false;
             }
             // check if it's a 3+ steps move
-            else if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
+            else if ((Math.abs(rows) !== 1) || (Math.abs(columns) !== 1))
                 return false;
         }
         else if (startPiece instanceof Queen)
-                if ((Math.abs(rows) != 1) || (Math.abs(columns) != 1))
+                if ((Math.abs(rows) !== 1) || (Math.abs(columns) !== 1))
                     return false;
         return true;
     }
@@ -180,8 +182,8 @@ class Checkers extends Game {
     movePiece(piece, initialPos, finalPos) {
         if (piece instanceof Pawn) {
             // create the new piece at the final position
-            if (((piece.color == "white") && (finalPos[0] == 8)) ||
-                ((piece.color == "black") && (finalPos[0] == 1)))
+            if (((piece.color === "white") && (finalPos[0] === 8)) ||
+                ((piece.color === "black") && (finalPos[0] === 1)))
                 this.board.matrix[finalPos[0]][finalPos[1]] = new Queen(piece.color);
             else this.board.matrix[finalPos[0]][finalPos[1]] = new Pawn(piece.color);
         }
@@ -204,7 +206,7 @@ class Checkers extends Game {
         let endPiece = this.board.matrix[finalPos[0]][finalPos[1]];
 
         // check if there's a piece at starting position with the right color
-        if (startPiece && !endPiece && startPiece.color.toUpperCase() == currentPlayer) {
+        if (startPiece && !endPiece && startPiece.color.toUpperCase() === currentPlayer) {
             // check if the piece can move at destination
             if (this.validMove(startPiece, initialPos, finalPos)) {
                 this.movePiece(startPiece, initialPos, finalPos);
@@ -221,3 +223,5 @@ class Checkers extends Game {
         else return "INVALID MOVE";
     }
 }
+
+export default Checkers
