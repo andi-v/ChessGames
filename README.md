@@ -1,3 +1,5 @@
+![Screenshot](https://github.com/brainman07/chess-games/blob/master/public/snapshot.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
