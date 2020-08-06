@@ -1,6 +1,8 @@
-class Chess extends Game {
+import Board from './Board'
+import { Pawn, Rook, Horse, Bishop, Queen, King } from './Pieces.js'
+
+class Chess {
     constructor() {
-        super();
         this.board = new Board(8, 8);
         this.createInitialMatrix();
     }
@@ -51,17 +53,17 @@ class Chess extends Game {
     freePath(initialPos, finalPos) {
         let initRow = +initialPos[0], finRow = +finalPos[0],
             initCol = +initialPos[1], finCol = +finalPos[1];
-        if (initCol == finCol && Math.abs(finRow - initRow) > 1) {
+        if (initCol === finCol && Math.abs(finRow - initRow) > 1) {
             for (let row of this.range(initRow, finRow))
                 if (this.getPiece(row, initCol))
                     return false;
         }
-        else if (initRow == finRow && Math.abs(finCol - initCol) > 1) {
+        else if (initRow === finRow && Math.abs(finCol - initCol) > 1) {
             for (let col of this.range(initCol, finCol))
                 if (this.getPiece(initRow, col))
                     return false;
         }
-        else if (Math.abs(finRow - initRow) == Math.abs(finCol - initCol) &&
+        else if (Math.abs(finRow - initRow) === Math.abs(finCol - initCol) &&
                 Math.abs(finRow - initRow) > 1) {
             let rows = this.range(initRow, finRow);
             let columns = this.range(initCol, finCol);
@@ -77,44 +79,44 @@ class Chess extends Game {
         if (startPiece instanceof Pawn) {
             if (!endPiece) {
                 // The Pawn rules for moving to an empty location
-                if (startPiece.color == "white") {
-                    if ((rows != 1) || (columns != 0)) return false;
+                if (startPiece.color === "white") {
+                    if ((rows !== 1) || (columns !== 0)) return false;
                 }
-                else if ((rows != -1) || (columns != 0)) return false;
+                else if ((rows !== -1) || (columns !== 0)) return false;
             }
             else {
                 // The Pawn rules for capturing another piece
-                if (startPiece.color == "white") {
-                    if ((rows != 1) || (Math.abs(columns) != 1)) return false;
+                if (startPiece.color === "white") {
+                    if ((rows !== 1) || (Math.abs(columns) !== 1)) return false;
                 }
-                else if ((rows != -1) || (Math.abs(columns) != 1)) return false;
+                else if ((rows !== -1) || (Math.abs(columns) !== 1)) return false;
             }
         }
         if (startPiece instanceof Rook)
-            if (rows * columns != 0) return false;
+            if (rows * columns !== 0) return false;
         if (startPiece instanceof Horse)
-            if ((rows * columns != 2) && (rows * columns != -2))
+            if ((rows * columns !== 2) && (rows * columns !== -2))
                 return false;
         if (startPiece instanceof Bishop)
-            if (Math.abs(rows) != Math.abs(columns))
+            if (Math.abs(rows) !== Math.abs(columns))
                 return false;
         if (startPiece instanceof Queen)
-            if ((rows * columns != 0) && (Math.abs(rows) != Math.abs(columns)))
+            if ((rows * columns !== 0) && (Math.abs(rows) !== Math.abs(columns)))
                 return false;
         if (startPiece instanceof King)
             if ((Math.abs(rows) > 1) || (Math.abs(columns) > 1))
                 return false;
         
         // Two pieces of the same color cannot capture each other
-        if (endPiece && (startPiece.color == endPiece.color))
+        if (endPiece && (startPiece.color === endPiece.color))
             return false;
         return true;
     }
 
     movePiece(piece, initialPos, finalPos) {
         if (piece instanceof Pawn) {
-            if (((piece.color == "white") && (finalPos[0] == 8)) ||
-                ((piece.color == "black") && (finalPos[0] == 1)))
+            if (((piece.color === "white") && (finalPos[0] === 8)) ||
+                ((piece.color === "black") && (finalPos[0] === 1)))
                 this.setPiece(finalPos[0], finalPos[1], new Queen(piece.color));
             else this.setPiece(finalPos[0], finalPos[1], new Pawn(piece.color));
         }
@@ -139,7 +141,7 @@ class Chess extends Game {
         let endPiece = this.getPiece(finalPos[0], finalPos[1]);
         
         // check if there's a piece at starting position with the right color
-        if (startPiece && startPiece.color.toUpperCase() == currentPlayer) {
+        if (startPiece && startPiece.color.toUpperCase() === currentPlayer) {
             // check if the piece can move at destination
             if (this.validMove(startPiece, endPiece, finalPos[0]-initialPos[0], finalPos[1]-initialPos[1])) {
                 // check if the path is clear, except for Horses
@@ -154,3 +156,5 @@ class Chess extends Game {
         else return "INVALID MOVE";
     }
 }
+
+export default Chess
